@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeLeaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Все страницы</title>
+</head>
+<body>
+    <h1>Все страницы</h1>
+    <ul>
+        <li th:each="url: ${urls}"><a th:href="${url.name}" th:text="${url.name}"></a></li>
+    </ul>
+</body>
+</html>
