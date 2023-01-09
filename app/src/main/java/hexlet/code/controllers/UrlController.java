@@ -58,8 +58,6 @@ public class UrlController {
             return;
         }
 
-        var temp = new QUrl().name.equalTo("some-url").findOneOrEmpty();
-
         var url = new QUrl().id.equalTo(id).findOneOrEmpty();
         if (url.isEmpty()) {
             getLogger().info(String.format("Url with id=%s not found", id));
