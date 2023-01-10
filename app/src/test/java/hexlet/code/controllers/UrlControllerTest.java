@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static hexlet.code.App.getApp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class UrlControllerTest {
     private static final int PORT = 5002;
@@ -57,12 +57,12 @@ public final class UrlControllerTest {
     @Test
     void testPostUrls() {
         var name = "https://minecraft.net";
-        var response = Unirest.post(BASE_URL + "/urls").field("url", name).asEmpty();
-        // assertEquals(..., response.getStatus());
-
-        // try to get this url in database
+        var postResponse = Unirest.post(BASE_URL + "/urls").field("url", name).asEmpty();
+        var getResponse = Unirest.get(BASE_URL + "/urls").asString();
         var url = new QUrl().name.equalTo(name).findOneOrEmpty();
-        assertFalse(url.isEmpty());
-        assertEquals(name, url.get().getName());
+
+        assertTrue(getResponse.getBody().contains(name), String.format("Body contains '%s'", name));
+        assertEquals(HttpCode.FOUND.getStatus(), postResponse.getStatus(), "Response status equals to FOUND");
+        assertTrue(url.isPresent(), "Url added to database");
     }
 }
