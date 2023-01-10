@@ -11,24 +11,21 @@ import java.time.LocalDateTime;
 
 
 @Entity
-public class Url extends Model {
-    @Id
-    private long id;
+public class Url extends BaseModel {
 
     @Column(unique = true, nullable = false)
     private String name;
 
-    @WhenCreated
-    private LocalDateTime createdAt;
-
-    public Url() {
-    }
-
     public String getName() {
         return name;
     }
+
     public void setName(String value) {
         this.name = value;
+    }
+
+    public Url() {
+
     }
 
     public Url(String name) {
