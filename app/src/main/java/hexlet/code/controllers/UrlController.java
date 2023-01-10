@@ -20,7 +20,7 @@ public class UrlController {
         ctx.render("list.html");
     };
 
-    public static Handler postUrl = ctx -> {
+    public static Handler postUrls = ctx -> {
         String urlString = ctx.formParam("url");
 
         if (urlString == null) {
@@ -43,7 +43,7 @@ public class UrlController {
             ctx.sessionAttribute("flash", "Страница уже существует");
         }
 
-        ctx.redirect("/");
+        ctx.redirect("/urls");
     };
 
     public static Handler showUrl = ctx -> {
