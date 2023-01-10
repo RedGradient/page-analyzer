@@ -55,7 +55,7 @@ public final class UrlControllerTest {
     }
 
     @Test
-    void testPostUrl() {
+    void testPostUrls() {
         var name = "https://minecraft.net";
         var response = Unirest.post(BASE_URL + "/urls").field("url", name).asEmpty();
         // assertEquals(..., response.getStatus());
