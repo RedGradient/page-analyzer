@@ -30,28 +30,38 @@ public final class UrlControllerTest {
 
     @Test
     void testMainPage() {
-        var response = Unirest.get(BASE_URL + "/").asEmpty();
-        assertEquals(HttpCode.OK.getStatus(), response.getStatus());
+        var response = Unirest.get(BASE_URL + "/").asString();
+
+        assertTrue(response.getBody().contains("Анализатор страниц"));
+        assertEquals(HttpCode.OK.getStatus(), response.getStatus(), "Response status is OK");
     }
 
     @Test
     void testGetAllUrls() {
-        var response = Unirest.get(BASE_URL + "/urls").asEmpty();
-        assertEquals(HttpCode.OK.getStatus(), response.getStatus());
+        var response = Unirest.get(BASE_URL + "/urls").asString();
+        var url1 = "https://google.com";
+        var url2 = "https://facebook.com";
+        var url3 = "https://my-site.com";
+
+        assertTrue(response.getBody().contains(url1), String.format("Body contains '%s'", url1));
+        assertTrue(response.getBody().contains(url2), String.format("Body contains '%s'", url2));
+        assertTrue(response.getBody().contains(url3), String.format("Body contains '%s'", url3));
+        assertEquals(HttpCode.OK.getStatus(), response.getStatus(), "Response status is OK");
     }
 
     @Test
     void testShowUrl() {
         var response = Unirest.get(BASE_URL + "/urls/{id}")
                 .routeParam("id", "1")
-                .asEmpty();
-
+                .asString();
         var badResponse = Unirest.get(BASE_URL + "/urls/{id}")
                 .routeParam("id", "badId")
                 .asEmpty();
+        var url = "https://google.com";
 
-        assertEquals(HttpCode.OK.getStatus(), response.getStatus());
-        assertEquals(HttpCode.NOT_FOUND.getStatus(), badResponse.getStatus());
+        assertTrue(response.getBody().contains(url), String.format("Body contains '%s'", url));
+        assertEquals(HttpCode.OK.getStatus(), response.getStatus(), "Response status is OK");
+        assertEquals(HttpCode.NOT_FOUND.getStatus(), badResponse.getStatus(), "Response status is NOT_FOUND");
     }
 
     @Test
@@ -62,7 +72,7 @@ public final class UrlControllerTest {
         var url = new QUrl().name.equalTo(name).findOneOrEmpty();
 
         assertTrue(getResponse.getBody().contains(name), String.format("Body contains '%s'", name));
-        assertEquals(HttpCode.FOUND.getStatus(), postResponse.getStatus(), "Response status equals to FOUND");
+        assertEquals(HttpCode.FOUND.getStatus(), postResponse.getStatus(), "Response status is FOUND");
         assertTrue(url.isPresent(), "Url added to database");
     }
 }
