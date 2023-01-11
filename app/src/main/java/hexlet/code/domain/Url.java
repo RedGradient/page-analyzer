@@ -3,6 +3,7 @@ package hexlet.code.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.util.List;
 
 
 @Entity
@@ -12,7 +13,7 @@ public class Url extends BaseModel {
     private String name;
 
     @OneToMany
-    private UrlCheck urlChecks;
+    private List<UrlCheck> urlChecks;
 
     public String getName() {
         return name;
