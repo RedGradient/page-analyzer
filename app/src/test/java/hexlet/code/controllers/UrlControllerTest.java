@@ -75,4 +75,14 @@ public final class UrlControllerTest {
         assertEquals(HttpCode.FOUND.getStatus(), postResponse.getStatus(), "Response status is FOUND");
         assertTrue(url.isPresent(), "Url added to database");
     }
+
+    // urls/{id}/checks
+    @Test
+    void testUrlChecks() {
+        var response = Unirest.get(BASE_URL + "urls/{id}/checks")
+                .routeParam("id", "1")
+                .asEmpty();
+
+        assertEquals(HttpCode.OK.getStatus(), response.getStatus());
+    }
 }
