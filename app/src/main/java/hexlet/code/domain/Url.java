@@ -1,13 +1,8 @@
 package hexlet.code.domain;
 
-import io.ebean.Model;
-import io.ebean.annotation.NotNull;
-import io.ebean.annotation.WhenCreated;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.time.LocalDateTime;
+import javax.persistence.OneToMany;
 
 
 @Entity
@@ -15,6 +10,9 @@ public class Url extends BaseModel {
 
     @Column(unique = true, nullable = false)
     private String name;
+
+    @OneToMany
+    private UrlCheck urlChecks;
 
     public String getName() {
         return name;
