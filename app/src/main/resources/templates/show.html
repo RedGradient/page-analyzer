@@ -1,11 +1,67 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeLeaf.org" lang="ru">
+<html lang="ru"
+      xmlns:th="http://www.thymeLeaf.org"
+      layout:decorate="~{application.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
+    <link rel='stylesheet' href='/webjars/bootstrap/5.1.3/css/bootstrap.min.css'>
+    <script src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <title>Страница</title>
 </head>
+
 <body>
-    <h1>Страница</h1>
-    <p th:text="${url.name}"></p>
+
+<section layout:fragment="content">
+    <div class="container-lg mt-5">
+        <h1 th:text="'Сайт ' + ${url.name}"></h1>
+
+        <table class="table table-bordered table-hover mt-3">
+            <tbody>
+            <tr>
+                <td>ID</td>
+                <td th:text="${url.id}"></td>
+            </tr>
+            <tr>
+                <td>Имя</td>
+                <td th:text="${url.name}"></td>
+            </tr>
+            <tr>
+                <td>Дата создания</td>
+                <td th:text="${url.createdAt}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h2 class="mt-5">Проверки</h2>
+        <form method="post" th:action="'/urls/' + ${url.id} + '/checks'">
+            <button type="submit" class="btn btn-primary">Запустить проверку</button>
+        </form>
+
+        <table class="table table-bordered table-hover mt-3">
+            <thead>
+            <tr>
+                <th class="col-1">ID</th>
+                <th class="col-1">Код ответа</th>
+                <th>title</th>
+                <th>h1</th>
+                <th>description</th>
+                <th class="col-2">Дата проверки</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="urlCheck : ${urlChecks}">
+                <td th:text="${urlCheck.id}"></td>
+                <td th:text="${urlCheck.statusCode}"></td>
+                <td th:text="${urlCheck.title}"></td>
+                <td th:text="${urlCheck.h1}"></td>
+                <td th:text="${urlCheck.description}"></td>
+                <td th:text="${urlCheck.createdAt}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
 </body>
 </html>

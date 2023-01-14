@@ -1,13 +1,42 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeLeaf.org">
+<html lang="ru"
+      xmlns:th="http://www.thymeLeaf.org"
+      layout:decorate="~{application.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
+    <link rel='stylesheet' href='/webjars/bootstrap/5.1.3/css/bootstrap.min.css'>
+    <script src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <title>Все страницы</title>
 </head>
 <body>
-    <h1>Все страницы</h1>
-    <ul>
-        <li th:each="url: ${urls}"><a th:href="${url.name}" th:text="${url.name}"></a></li>
-    </ul>
+
+    <section layout:fragment="content">
+        <div class="container-lg mt-5">
+            <h1>Сайты</h1>
+
+            <table class="table table-bordered table-hover mt-3">
+                <thead>
+                <tr>
+                    <th class="col-1">ID</th>
+                    <th>Имя</th>
+                    <th class="col-2">Последняя проверка</th>
+                    <th class="col-1">Код ответа</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="url : ${urls}">
+                    <td th:text="${url.id}"></td>
+                    <td>
+                        <a th:href="'/urls/' + ${url.id}" th:text="${url.name}"></a>
+                    </td>
+                    <td th:text="${urlsAndChecks['__${url.name}__']['latestCheck']}"></td>
+                    <td th:text="${urlsAndChecks['__${url.name}__']['statusCode']}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
 </body>
 </html>
