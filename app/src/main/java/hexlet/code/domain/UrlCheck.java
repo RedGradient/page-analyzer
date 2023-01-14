@@ -1,7 +1,10 @@
 package hexlet.code.domain;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
+@Getter
 @Entity
 public class UrlCheck extends BaseModel {
     @Column(nullable = false)
@@ -20,7 +23,7 @@ public class UrlCheck extends BaseModel {
     @ManyToOne
     private Url url;
 
-    UrlCheck() {
+    public UrlCheck() {
 
     }
 }
