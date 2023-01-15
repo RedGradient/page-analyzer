@@ -2,23 +2,34 @@ package hexlet.code.controllers;
 
 import hexlet.code.domain.Url;
 import hexlet.code.domain.query.QUrl;
+import hexlet.code.domain.query.QUrlCheck;
+import io.javalin.Javalin;
 import io.javalin.http.HttpCode;
 import kong.unirest.Unirest;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static hexlet.code.App.getApp;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-public final class UrlControllerTest {
+import static hexlet.code.App.getApp;
+import static org.junit.jupiter.api.Assertions.*;
+
+final class UrlControllerTest {
     private static final int PORT = 5002;
     private static final String HOST = "http://localhost";
     private static final String BASE_URL = HOST + ":" + PORT;
+    private static Javalin app;
+    private static MockWebServer mockServer;
 
     @BeforeAll
     static void beforeAll() {
-        var app = getApp();
+        mockServer = new MockWebServer();
+        app = getApp();
         app.start(PORT);
 
         // create sample data
@@ -26,6 +37,12 @@ public final class UrlControllerTest {
         new Url("https://apple.com").save();
         new Url("https://facebook.com").save();
         new Url("https://my-site.com:8080").save();
+    }
+
+    @AfterAll
+    static void afterAll() throws IOException {
+        app.stop();
+        mockServer.shutdown();
     }
 
     @Test
@@ -76,13 +93,50 @@ public final class UrlControllerTest {
         assertTrue(url.isPresent(), "Url added to database");
     }
 
-    // urls/{id}/checks
     @Test
-    void testUrlChecks() {
-        var response = Unirest.get(BASE_URL + "urls/{id}/checks")
-                .routeParam("id", "1")
-                .asEmpty();
+    void testCheckUrl() throws IOException {
+        var mockUrl = mockServer.url("some-site.com");
+        var urlString = String.format("%s://%s:%s", mockUrl.scheme(), mockUrl.host(), mockUrl.port());
 
-        assertEquals(HttpCode.OK.getStatus(), response.getStatus());
+        MockResponse mockResponse = new MockResponse();
+        Path filePath = Path.of("src/test/resources/sample-body.html");
+        mockResponse.setBody(Files.readString(filePath));
+        mockServer.enqueue(mockResponse);
+
+        // add the URL to DB
+        var response = Unirest
+                .post(BASE_URL + "/urls")
+                .field("url", urlString)
+                .asString();
+        assertEquals(response.getStatus(), HttpCode.FOUND.getStatus());
+
+        var urlModel = new QUrl()
+                .name.equalTo(urlString)
+                .findOneOrEmpty()
+                .orElse(null);
+        assertNotNull(urlModel);
+
+        // check the URL
+        var response2 = Unirest
+                .post(BASE_URL + "/urls/" + urlModel.getId() + "/checks")
+                .asString();
+        assertEquals(response2.getStatus(), HttpCode.FOUND.getStatus());
+
+        var latestCheck = new QUrlCheck()
+                .url.equalTo(urlModel)
+                .createdAt.desc()
+                .setMaxRows(1)
+                .findOneOrEmpty()
+                .orElse(null);
+        assertNotNull(latestCheck);
+
+        var response3 = Unirest.get(BASE_URL + "/urls/" + urlModel.getId()).asString();
+        assertEquals(response3.getStatus(), HttpCode.OK.getStatus());
+        var resBody = response3.getBody();
+        assertTrue(resBody.contains(String.valueOf(latestCheck.getStatusCode())));
+        assertTrue(resBody.contains(latestCheck.getUrl().getName()));
+        assertTrue(resBody.contains(latestCheck.getH1()));
+        assertTrue(resBody.contains(latestCheck.getDescription()));
+        assertTrue(resBody.contains(latestCheck.getCreatedAt().toString()));
     }
 }
