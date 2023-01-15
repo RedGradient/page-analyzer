@@ -6,6 +6,9 @@ import hexlet.code.domain.query.QUrl;
 import hexlet.code.domain.query.QUrlCheck;
 import io.javalin.http.Handler;
 import io.javalin.http.HttpCode;
+import kong.unirest.Unirest;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -98,23 +101,27 @@ public class UrlController {
             var id = Integer.valueOf(ctx.pathParam("id"));
             var url = new QUrl().id.equalTo(id).findOneOrEmpty().orElseThrow();
 
-
             // --- check url ---
-
+            var response = Unirest.get(url.getName()).asString();
+            Document doc = Jsoup.parse(response.getBody());
+            var h1 = doc.selectFirst("h1");
+            var h1Text = h1 != null ? h1.text() : "";
+            var meta = doc.selectFirst("meta[name=description]");
+            var description = meta != null ? meta.attr("content") : "";
             new UrlCheck(
-                    200,
-                    "Example Title",
-                    "Some Text",
-                    "h1-h1-h1-h1-h1-h1",
+                    response.getStatus(),
+                    doc.title(),
+                    h1Text,
+                    description,
                     url
             ).save();
             // -----------------
-
 
             var urlChecks = new QUrlCheck()
                     .url.equalTo(url)
                     .id.desc()
                     .findList();
+
             ctx.sessionAttribute("urlChecks", urlChecks);
             ctx.sessionAttribute("flash", "Страница успешно проверена");
             ctx.sessionAttribute("alertType", "alert-primary");
