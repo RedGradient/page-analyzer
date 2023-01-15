@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'application'
-//    id 'checkstyle'
+    id 'checkstyle'
     id 'com.adarshr.test-logger' version '3.2.0'
     id 'com.github.ben-manes.versions' version '0.42.0'
     id 'io.ebean' version '13.11.0'
@@ -85,9 +85,11 @@ jacocoTestReport {
     }
 }
 
-//checkstyle {
-//    toolVersion '10.0'
-//}
+checkstyle {
+    toolVersion '10.0'
+}
+checkstyleMain.source = "src/main/java"
+checkstyleTest.source = "src/test/java"
 
 task generateMigrations(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
