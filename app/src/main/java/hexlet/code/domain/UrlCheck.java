@@ -2,7 +2,10 @@ package hexlet.code.domain;
 
 import lombok.Getter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 
 @Getter
 @Entity

@@ -17,7 +17,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static hexlet.code.App.getApp;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 final class UrlControllerTest {
     private static final int PORT = 5002;
