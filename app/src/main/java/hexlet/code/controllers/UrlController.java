@@ -19,9 +19,7 @@ import java.util.NoSuchElementException;
 import static hexlet.code.App.getLogger;
 
 public class UrlController {
-    public static Handler mainPage = ctx -> {
-        ctx.render("index.html");
-    };
+    public static Handler mainPage = ctx -> ctx.render("index.html");
 
     public static Handler getUrls = ctx -> {
         var urls = new QUrl().findList();
@@ -53,7 +51,7 @@ public class UrlController {
 
     public static Handler postUrls = ctx -> {
         var urlString = ctx.formParamAsClass("url", String.class).get();
-        URL url = null;
+        URL url;
         try {
             url = new URL(urlString);
         } catch (MalformedURLException e) {
@@ -105,9 +103,9 @@ public class UrlController {
             var response = Unirest.get(url.getName()).asString();
             Document doc = Jsoup.parse(response.getBody());
             var h1 = doc.selectFirst("h1");
-            var h1Text = h1 != null ? h1.text() : "";
+            var h1Text = (h1 != null) ? h1.text() : "";
             var meta = doc.selectFirst("meta[name=description]");
-            var description = meta != null ? meta.attr("content") : "";
+            var description = (meta != null) ? meta.attr("content") : "";
             new UrlCheck(
                     response.getStatus(),
                     doc.title(),
