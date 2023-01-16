@@ -8,6 +8,7 @@ import javax.persistence.OneToMany;
 import java.util.List;
 
 
+//CHECKSTYLE:OFF
 @Getter
 @Entity
 public class Url extends BaseModel {

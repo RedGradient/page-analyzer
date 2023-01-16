@@ -9,6 +9,7 @@ import javax.persistence.MappedSuperclass;
 import java.time.Instant;
 
 
+//CHECKSTYLE:OFF
 @Getter
 @MappedSuperclass
 public abstract class BaseModel extends Model {
