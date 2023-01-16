@@ -9,7 +9,6 @@ import javax.persistence.MappedSuperclass;
 import java.time.Instant;
 
 
-//CHECKSTYLE:OFF
 @Getter
 @MappedSuperclass
 public abstract class BaseModel extends Model {
@@ -19,9 +18,5 @@ public abstract class BaseModel extends Model {
 
     @WhenCreated
     protected Instant createdAt;
-
-    public long getId() {
-        return id;
-    }
 
 }

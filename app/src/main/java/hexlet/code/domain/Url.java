@@ -1,6 +1,7 @@
 package hexlet.code.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,24 +9,16 @@ import javax.persistence.OneToMany;
 import java.util.List;
 
 
-//CHECKSTYLE:OFF
 @Getter
 @Entity
 public class Url extends BaseModel {
 
+    @Setter
     @Column(unique = true, nullable = false)
     private String name;
 
     @OneToMany
     private List<UrlCheck> urlChecks;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String value) {
-        this.name = value;
-    }
 
     public Url() {
 
