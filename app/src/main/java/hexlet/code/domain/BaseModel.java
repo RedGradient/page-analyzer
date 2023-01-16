@@ -20,9 +20,6 @@ public abstract class BaseModel extends Model {
     @WhenCreated
     protected Instant createdAt;
 
-    @WhenModified
-    protected Instant modifiedAt;
-
     public long getId() {
         return id;
     }
