@@ -12,7 +12,6 @@ import java.util.List;
 
 @Getter
 @Entity
-@Table(name = "url")
 public class Url extends BaseModel {
 
     @Setter

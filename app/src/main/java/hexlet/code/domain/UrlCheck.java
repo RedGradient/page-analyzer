@@ -6,7 +6,6 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "url_check")
 public class UrlCheck extends BaseModel {
     @Column(nullable = false)
     private int statusCode;
