@@ -2,13 +2,11 @@ package hexlet.code.domain;
 
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Getter
 @Entity
+@Table(name = "url_check")
 public class UrlCheck extends BaseModel {
     @Column(nullable = false)
     private int statusCode;
