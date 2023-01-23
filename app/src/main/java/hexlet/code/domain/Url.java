@@ -3,6 +3,7 @@ package hexlet.code.domain;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -17,7 +18,7 @@ public class Url extends BaseModel {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<UrlCheck> urlChecks;
 
     public Url() {
