@@ -98,13 +98,15 @@ public class UrlController {
             var h1Text = (h1 != null) ? h1.text() : "";
             var meta = doc.selectFirst("meta[name=description]");
             var description = (meta != null) ? meta.attr("content") : "";
-            new UrlCheck(
+            var urlCheck = new UrlCheck(
                     response.getStatus(),
                     doc.title(),
                     h1Text,
                     description,
                     url
-            ).save();
+            );
+            url.getUrlChecks().add(urlCheck);
+            url.save();
             // -----------------
 
             var urlChecks = new QUrlCheck()
