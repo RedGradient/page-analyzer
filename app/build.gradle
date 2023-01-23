@@ -24,10 +24,6 @@ compileJava {
     options.encoding = 'UTF-8'
 }
 
-//tasks.withType(JavaCompile) {
-//    options.encoding = 'UTF-8'
-//}
-
 sourceSets.main.java.srcDirs = ['src/main/java', 'build/generated/sources/annotationProcessor/java/main']
 
 dependencies {
@@ -71,10 +67,6 @@ dependencies {
     testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
 }
 
-clean {
-    delete "src/main/resources/dbmigration"
-}
-
 test {
     useJUnitPlatform()
 }
@@ -100,5 +92,4 @@ task generateMigrations(type: JavaExec) {
     mainClass = 'hexlet.code.MigrationGenerator'
 }
 
-task stage(dependsOn: ['clean', 'generateMigrations', 'installDist'])
 installDist.mustRunAfter clean
