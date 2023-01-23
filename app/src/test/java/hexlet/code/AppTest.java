@@ -16,6 +16,8 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 import static hexlet.code.App.getApp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,6 +29,8 @@ final class AppTest {
     private static final String BASE_URL = "http://localhost:" + PORT;
     private static Javalin app;
     private static MockWebServer mockServer;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
+            .withZone(ZoneId.systemDefault());
 
     @BeforeAll
     static void beforeAll() {
@@ -136,6 +140,9 @@ final class AppTest {
         assertTrue(resBody.contains(latestCheck.getUrl().getName()));
         assertTrue(resBody.contains(latestCheck.getH1()));
         assertTrue(resBody.contains(latestCheck.getDescription()));
-        assertTrue(resBody.contains(latestCheck.getCreatedAt().toString()));
+
+        var formattedInstant = FORMATTER.format(latestCheck.getCreatedAt());
+        assertTrue(resBody.contains(formattedInstant));
+
     }
 }
