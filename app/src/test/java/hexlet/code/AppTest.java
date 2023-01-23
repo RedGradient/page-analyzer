@@ -1,6 +1,5 @@
 package hexlet.code;
 
-import hexlet.code.domain.Url;
 import hexlet.code.domain.query.QUrl;
 import hexlet.code.domain.query.QUrlCheck;
 import io.ebean.DB;
