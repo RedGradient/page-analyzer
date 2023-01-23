@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static hexlet.code.App.getLogger;
 
@@ -24,28 +25,17 @@ public class UrlController {
     public static Handler getUrls = ctx -> {
         var urls = new QUrl().findList();
 
-        HashMap<String, Map<String, String>> urlsAndChecks = new HashMap<>();
+        HashMap<Url, Optional<UrlCheck>> urlsAndChecks = new HashMap<>();
         for (var url : urls) {
             var urlCheck = new QUrlCheck()
                     .url.equalTo(url)
                     .createdAt.desc()
                     .setMaxRows(1)
                     .findOneOrEmpty();
-            String statusCode = "";
-            String latestCheck = "";
-            if (urlCheck.isPresent()) {
-                statusCode = String.valueOf(urlCheck.get().getStatusCode());
-                latestCheck = urlCheck.get().getCreatedAt().toString();
-            }
-            urlsAndChecks.put(
-                    url.getName(),
-                    Map.of("statusCode", statusCode, "latestCheck", latestCheck)
-            );
+            urlsAndChecks.put(url, urlCheck);
         }
 
-        ctx.attribute("urls", urls);
         ctx.attribute("urlsAndChecks", urlsAndChecks);
-
         ctx.render("list.html");
     };
 

@@ -25,13 +25,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="url : ${urls}">
-                    <td th:text="${url.id}"></td>
+                <tr th:each="pair : ${urlsAndChecks}">
+                    <td th:text="${pair.key.id}"></td>
                     <td>
-                        <a th:href="'/urls/' + ${url.id}" th:text="${url.name}"></a>
+                        <a th:href="'/urls/' + ${pair.key.id}" th:text="${pair.key.name}"></a>
                     </td>
-                    <td th:text="${urlsAndChecks['__${url.name}__']['latestCheck']}"></td>
-                    <td th:text="${urlsAndChecks['__${url.name}__']['statusCode']}"></td>
+                    <td th:text="${pair.value.isPresent}? ${#temporals.format(pair.value.get.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+                    <td th:text="${pair.value.isPresent}? ${pair.value.get.statusCode}"></td>
                 </tr>
                 </tbody>
             </table>
