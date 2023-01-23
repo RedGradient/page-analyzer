@@ -69,7 +69,7 @@ public class UrlController {
 
     public static Handler showUrl = ctx -> {
         try {
-            var id = Integer.valueOf(ctx.pathParam("id"));
+            Integer id = ctx.pathParamAsClass("id", Integer.class).getOrDefault(null);
             var url = new QUrl().id.equalTo(id).findOneOrEmpty().orElseThrow();
             var urlChecks = new QUrlCheck()
                     .id.desc()
@@ -79,9 +79,10 @@ public class UrlController {
             ctx.attribute("urlChecks", urlChecks);
             ctx.render("show.html");
         } catch (NoSuchElementException e) {
-            e.printStackTrace();
+            getLogger().error("Attempt to find URL that does not exist");
             ctx.status(HttpCode.NOT_FOUND);
         } catch (Exception e) {
+            getLogger().error(e.getMessage());
             ctx.status(HttpCode.NOT_FOUND);
         }
     };
