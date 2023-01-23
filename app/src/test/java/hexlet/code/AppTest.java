@@ -1,8 +1,9 @@
-package hexlet.code.controllers;
+package hexlet.code;
 
 import hexlet.code.domain.Url;
 import hexlet.code.domain.query.QUrl;
 import hexlet.code.domain.query.QUrlCheck;
+import io.ebean.DB;
 import io.javalin.Javalin;
 import io.javalin.http.HttpCode;
 import kong.unirest.Unirest;
@@ -21,10 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-final class UrlControllerTest {
+final class AppTest {
     private static final int PORT = 5002;
-    private static final String HOST = "http://localhost";
-    private static final String BASE_URL = HOST + ":" + PORT;
+    private static final String BASE_URL = "http://localhost:" + PORT;
     private static Javalin app;
     private static MockWebServer mockServer;
 
@@ -35,10 +35,7 @@ final class UrlControllerTest {
         app.start(PORT);
 
         // create sample data
-        new Url("https://google.com").save();
-        new Url("https://apple.com").save();
-        new Url("https://facebook.com").save();
-        new Url("https://my-site.com:8080").save();
+        DB.getDefault().script().run("/dbscripts/seed.sql");
     }
 
     @AfterAll
