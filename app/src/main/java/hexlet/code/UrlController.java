@@ -1,4 +1,4 @@
-package hexlet.code.controllers;
+package hexlet.code;
 
 import hexlet.code.domain.Url;
 import hexlet.code.domain.UrlCheck;
