@@ -1,6 +1,5 @@
 package hexlet.code;
 
-import hexlet.code.controllers.UrlController;
 import io.javalin.Javalin;
 import io.javalin.plugin.rendering.template.JavalinThymeleaf;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
@@ -15,6 +14,7 @@ public class App {
     private static final int PORT = 5000;
     private static final String DEVELOPMENT = "development";
     private static final String PRODUCTION = "production";
+
     public static void main(String[] args) {
         var app = getApp();
         app.start(getPort());
