@@ -59,7 +59,7 @@ public class App {
         app.get("/", UrlController.mainPage);
         app.get("/urls", UrlController.getUrls);
         app.get("/urls/{id}", UrlController.showUrl);
-        app.post("/urls", UrlController.postUrls);
+        app.post("/urls", UrlController.addUrl);
         app.post("/urls/{id}/checks", UrlController.checkUrl);
     }
 

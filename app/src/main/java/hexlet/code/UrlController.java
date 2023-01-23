@@ -49,7 +49,7 @@ public class UrlController {
         ctx.render("list.html");
     };
 
-    public static Handler postUrls = ctx -> {
+    public static Handler addUrl = ctx -> {
         var urlString = ctx.formParamAsClass("url", String.class).get();
         URL url;
         try {
