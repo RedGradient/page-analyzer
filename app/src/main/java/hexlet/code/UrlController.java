@@ -55,6 +55,8 @@ public class UrlController {
         try {
             url = new URL(urlString);
         } catch (MalformedURLException e) {
+            ctx.sessionAttribute("flash", "Некорректный URL");
+            ctx.sessionAttribute("alertType", "alert-warning");
             ctx.redirect("/");
             return;
         }
