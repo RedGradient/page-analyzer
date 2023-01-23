@@ -12,7 +12,9 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 
 public class App {
-    static final int PORT = 5000;
+    private static final int PORT = 5000;
+    private static final String DEVELOPMENT = "development";
+    private static final String PRODUCTION = "production";
     public static void main(String[] args) {
         var app = getApp();
         app.start(getPort());
