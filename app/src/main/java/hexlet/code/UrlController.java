@@ -118,7 +118,7 @@ public class UrlController {
             ctx.sessionAttribute("alertType", "alert-primary");
             ctx.redirect("/urls/" + id);
         } catch (Exception e) {
-            e.printStackTrace();
+            getLogger().error(e.getMessage());
             ctx.sessionAttribute("flash", "Что-то пошло не так");
             ctx.sessionAttribute("alertType", "alert-warning");
         }
