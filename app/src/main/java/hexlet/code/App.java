@@ -24,11 +24,11 @@ public class App {
     }
 
     private static String getMode() {
-        return System.getenv().getOrDefault("APP_ENV", "development");
+        return System.getenv().getOrDefault("APP_ENV", DEVELOPMENT);
     }
 
     private static boolean isProduction() {
-        return getMode().equals("production");
+        return getMode().equals(PRODUCTION);
     }
 
     public static Javalin getApp() {
