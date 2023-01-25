@@ -64,10 +64,10 @@ public class App {
         app.get("/", UrlController.mainPage);
         app.routes(() -> {
             path("urls", () -> {
-               get(UrlController.getUrls);
-               post(UrlController.addUrl);
-               get("{id}", UrlController.showUrl);
-               post("{id}/checks", UrlController.checkUrl);
+                get(UrlController.getUrls);
+                post(UrlController.addUrl);
+                get("{id}", UrlController.showUrl);
+                post("{id}/checks", UrlController.checkUrl);
             });
         });
     }
